@@ -1,4 +1,5 @@
 // ********************* Part 1: Humble Beginnings / *********************
+
 // Create an object named adventurer
 // Object has properties name, health, and inventory and, companion Leo
 const adventurer = {
@@ -35,7 +36,6 @@ adventurer.roll(); // robin rolled a 4
 adventurer.roll(9); // 25
 adventurer.roll(12); // 29
 adventurer.roll(18); // 28
-
 
 //********************* */ Part 2: Class Fantasy / *********************
 
@@ -98,7 +98,7 @@ class Adventurer extends Character {
 
   scout() {
     // Adventurers have the ability to scout ahead of them.
-    console.log(`$[this.name] is scouting ahead...`);
+    console.log(`${this.name} is scouting ahead...`);
     super.roll(); //calls the roll method from the parent class
   }
 }
@@ -125,14 +125,12 @@ console.log(robinAdventure.companion);
 console.log(robinAdventure.companion.companion);
 console.log(robinAdventure.companion.companion.inventory);
 
-
 //********************* Part 4: Class Uniforms *************************
 //Using static properties and methods, you can create uniform attributes for the class itself rather than instances of the class. Static properties are typically constant values that can be used elsewhere for reference, or utility methods that do not rely on the values of a specific class instance.
 // Using the static keyword:
 // Add a static MAX_HEALTH property to the Character class, equal to 100.
 // Add a static ROLES array to the Adventurer class, with the values “Fighter,” “Healer,” and “Wizard.” Feel free to add other roles, if you desire!
 // Add a check to the constructor of the Adventurer class that ensures the given role matches one of these values.
-
 
 //*********************** Part 5: Gather your Party *********************
 // AdventureFactory create Adventurer objects with a specific role. It will store all the adventurers it creates in an array and provide methods to find adventurers by their index in the array or by their name.
@@ -167,7 +165,6 @@ class AdventurerFactory {
   }
 }
 
-
 // Create a factory for Healers
 const healers = new AdventurerFactory("Healer");
 
@@ -175,31 +172,17 @@ const healers = new AdventurerFactory("Healer");
 healers.generate("Robin");
 
 // Generate more healers
-healers.generate('Yoni');
-healers.generate('Noah');
+healers.generate("Yoni");
+healers.generate("Noah");
 
 // Find a healer by name
-console.log(healers.findByName('Yoni'));
-console.log(healers.findByName('Noah'));
+console.log(healers.findByName("Yoni"));
+console.log(healers.findByName("Noah"));
 console.log(healers.findByName("Robin"));
-
 
 //*********************** */ Part 6: Developing Skills **********************
 
-// Many of the core features of these characters are now implemented, but the adventurers cannot  really do much yet. The only action (method) they have is scout().
-// Create an additional method, duel(), for the Adventurer class with the following functionality:
-// Accept an Adventurer as a parameter.
-
-// 1. Adding the duel() Method to the Adventurer Class
 // The duel() method will take another Adventurer as an opponent. Both adventurers will "roll" to determine the outcome of each round, and the loser will lose 1 point of health. The duel continues until one adventurer's health drops to 50 or below.
-class newAdventurer {
-  constructor(name, role) {
-    this.name = name;
-    this.role = role;
-    this.health = 100; // Starting health for all adventurers
-  }
-
-
 // Use the roll() functionality to create opposing rolls for each adventurer.
 // Subtract 1 from the adventurer with the lower roll.
 // Log the results of this “round” of the duel, including the rolls and current health values.
@@ -208,55 +191,70 @@ class newAdventurer {
 // What other properties and methods could these classes have? Should fighters, healers, and wizards have their own methods? Should companions have specific methods?
 // Feel free to experiment with your own ideas, be they silly or practical. The goal of this exercise is to develop new skills for the characters and yourself! Express your creativity.
 
+// 1.Extend the Adventurer Class: The AdventurewithDuel class is created by extending the existing Adventurer class. AdventureerwithDuel inherits all properties and methods of all the Adventurer class, name, health, inventory and roll().
 
-
-  // Method to simulate rolling a die (returns a random number between 1 and 20)
+class AdventurerwithDuel extends Adventurer {
+  // 2.Define the roll Method : the roll method generates a random number between 1 and 20 using Math.floor(Math.random()*20)+1
   roll() {
     return Math.floor(Math.random() * 20) + 1;
   }
 
-  // Existing scout method (for context)
+  // Existing scout method (for context) : the adventurer is scouting the area
   scout() {
     console.log(`${this.name} is scouting the area...`);
   }
 
   // New duel method
-  duel(opponent) {
-    console.log(`${this.name} (Health: ${this.health}) is dueling ${opponent.name} (Health: ${opponent.health})!`);
+  //Implemented within AdventurerWithDuel class to allow two adventurers to engage in a duel until one’s health falls to or below 50 : takes another Adventurer as an opponent.
 
+  duel(opponent) {
+    console.log(
+      `${this.name} (Health: ${this.health}) is dueling ${opponent.name} (Health: ${opponent.health})!`
+    );
+
+    // a while loop continues the duel as long as both adventurers have health above 50.
     while (this.health > 50 && opponent.health > 50) {
-      // Each adventurer rolls
+      // Each adventurer rolls using the roll method
       const myRoll = this.roll();
       const opponentRoll = opponent.roll();
 
-      // Log the rolls
+      // the rolls are logged.
       console.log(`${this.name} rolls a ${myRoll}`);
       console.log(`${opponent.name} rolls a ${opponentRoll}`);
 
       // Determine who loses health
+      // the adventurer with the lower roll loses 1 health point
       if (myRoll > opponentRoll) {
         opponent.health -= 1;
-        console.log(`${opponent.name} loses 1 health! Current health: ${opponent.health}`);
+        console.log(
+          `${opponent.name} loses 1 health! Current health: ${opponent.health}`
+        );
       } else if (myRoll < opponentRoll) {
         this.health -= 1;
-        console.log(`${this.name} loses 1 health! Current health: ${this.health}`);
+        console.log(
+          `${this.name} loses 1 health! Current health: ${this.health}`
+        );
       } else {
-        console.log("It's a tie! No one loses health.");
+        console.log("It's a tie! No one loses health."); // if the rolls are tied, no one loses health
       }
     }
 
     // Log the winner
     if (this.health > 50) {
-      console.log(`${this.name} wins the duel with ${this.health} health remaining!`);
+      console.log(
+        `${this.name} wins the duel with ${this.health} health remaining!`
+      );
     } else {
-      console.log(`${opponent.name} wins the duel with ${opponent.health} health remaining!`);
+      console.log(
+        `${opponent.name} wins the duel with ${opponent.health} health remaining!`
+      );
     }
   }
 }
 
-// Create two adventurers
-const warrior = new newAdventurer("Thorin", "Warrior");
-const mage = new newAdventurer("Gandalf", "Mage");
+// Create instances of AdventureWithDuel
+const fighterRobin = new AdventurerwithDuel("Robin", "Fighter");
+const fighterYoni = new AdventurerwithDuel("Yoni", "Fighter");
 
 // Start a duel between the warrior and the mage
-warrior.duel(mage);
+fighterRobin.duel(fighterYoni);
